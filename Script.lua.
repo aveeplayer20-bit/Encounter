@@ -1,0 +1,54 @@
+-- Encounters PUBLIC Script (Stamina Only)
+-- Creador: Rogan
+
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local ToggleBtn = Instance.new("TextButton", ScreenGui)
+
+-- Configuración del Botón (Posición Perfecta: Bajo el menú, a la derecha)
+ToggleBtn.Size = UDim2.new(0, 130, 0, 45)
+ToggleBtn.Position = UDim2.new(1, -140, 0, 80) 
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 0) -- Inicia en Verde (ON)
+ToggleBtn.Text = "Estamina: ON"
+ToggleBtn.TextColor3 = Color3.new(1, 1, 1)
+ToggleBtn.Font = Enum.Font.SourceSansBold
+ToggleBtn.TextSize = 18
+ToggleBtn.ZIndex = 10 
+
+-- Estética: Bordes redondeados y borde blanco
+local UICorner = Instance.new("UICorner", ToggleBtn)
+UICorner.CornerRadius = UDim.new(0, 12)
+local UIStroke = Instance.new("UIStroke", ToggleBtn)
+UIStroke.Thickness = 2
+UIStroke.Color = Color3.new(1, 1, 1)
+
+local _G_Stamina = true -- Inicia activado por defecto
+local name = tostring(game.Players.LocalPlayer.Name)
+
+-- Lógica del Botón
+ToggleBtn.MouseButton1Click:Connect(function()
+    _G_Stamina = not _G_Stamina
+    if _G_Stamina then
+        ToggleBtn.Text = "Estamina: ON"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+    else
+        ToggleBtn.Text = "Estamina: OFF"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+    end
+end)
+
+-- Bucle de Energía Infinita
+game:GetService("RunService").Heartbeat:Connect(function()
+    if _G_Stamina then
+        local pChar = game:GetService("Workspace"):FindFirstChild(name)
+        if pChar and pChar:FindFirstChild("Energy") then
+            pChar.Energy.Value = 97
+        end
+    end
+end)
+
+-- Notificación elegante de Rogan
+game.StarterGui:SetCore("SendNotification", {
+    Title = "Creador: Rogan",
+    Text = "Script Público de Estamina Cargado.",
+    Duration = 4
+})
